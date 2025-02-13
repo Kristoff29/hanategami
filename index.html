@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Envelope</title>
+    <style>
+    /* Centering the container */
+    body, html {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e4e4e4;
+        flex-direction: column; /* Stack elements vertically */
+    }
+
+    .container {
+        position: relative;
+        width: 300px; /* Keep width the same */
+        height: 400px; /* Increased height */
+        cursor: pointer;
+    }
+
+    /* Bounce animation for the mail only */
+    .mail {
+        position: absolute;
+        height: 300px; /* Increased height */
+        width: 300px; /* Keep width the same */
+        transition: 0.4s;
+        transform: translateY(100px); /* Increased translateY */
+        z-index: 1;
+        animation: bounce 1s ease-in-out infinite; /* Quick bounce animation */
+    }
+
+    /* Bounce Animation */
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0); /* Start and end at normal position */
+        }
+        50% {
+            transform: translateY(-20px); /* Move up more quickly */
+        }
+    }
+
+    .mail .body {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-color: transparent transparent #e95f55 transparent;
+        bottom: 0;
+        border-style: solid;
+        border-width: 0 0 150px 300px; /* Increased size of the bottom fold */
+        z-index: 2;
+    }
+
+    /* The top fold will be closed initially */
+    .mail .top-fold {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-color: transparent transparent #cf4a43 transparent; /* Bottom border colored */
+        top: 75px; /* Lowered the position of the top fold */
+        transform: rotateX(90deg); /* Closed initially (rotated 90deg) */
+        border-style: solid;
+        border-width: 0 150px 75px 150px; /* Increased size of the top fold */
+        transform-origin: 50% 100%; /* Rotate from bottom center */
+        transition: transform 0.4s ease-in-out, z-index 0.2s;
+        z-index: 0; /* Set top fold behind the letter */
+    }
+
+    .mail .back-fold {
+        position: absolute;
+        width: 300px; /* Increased width */
+        height: 150px; /* Increased height */
+        background: #cf4a43;
+        bottom: 0;
+        z-index: 2; /* Set the back fold above the top fold */
+    }
+
+    .mail .left-fold {
+        position: absolute;
+        bottom: 0;
+        width: 0;
+        height: 0;
+        border-color: transparent transparent transparent #e15349;
+        border-style: solid;
+        border-width: 75px 0 75px 150px; /* Increased size of the left fold */
+        z-index: 3; /* Set left fold above the letter */
+    }
+
+    /* Letter design (hidden initially) */
+    .mail .letter {
+        width: 240px; /* Keep width the same */
+        height: 0; /* Initially hide the letter */
+        background: white;
+        left: 30px; /* Adjusted position */
+        bottom: 0px;
+        position: absolute;
+        z-index: 2; /* Set the letter above the top fold, but below the left/right folds */
+        overflow: hidden;
+        opacity: 0; /* Initially hide the letter */
+        font-family: 'Brush Script MT', cursive; /* Set the font style for the letter */
+        font-size: 36px; /* Set the font size */
+        color: #e95f55; /* Set the font color */
+        letter-spacing: 1px; /* Add spacing between letters */
+        text-align: center; /* Center-align the text */
+        line-height: 1.5; /* Add line spacing for better readability */
+        padding-top: 20px; /* Add some top padding to center text vertically */
+        transition: height 0.6s 0.2s, opacity 0.4s 0.2s; /* Transition for showing the letter */
+        
+    }
+    .mail .letter .message {
+    padding-left: 7px; /* Add space on the left side */
+    padding-right: 7px; /* Add space on the right side */
+}
+
+    .mail .letter .border {
+        height: 15px; /* Increased height */
+        width: 100%;
+        background: repeating-linear-gradient(-45deg, #cb5a5e, #cb5a5e, 12px, transparent 12px, transparent 24px); /* Adjusted border */
+    }
+
+    .mail .letter .title {
+        height: 15px; /* Increased height */
+        width: 60%;
+        background: #cb5a5e;
+        margin-top: 15px; /* Adjusted margin */
+        margin-left: 10px; /* Adjusted margin */
+    }
+
+    .mail .letter .context {
+        height: 15px; /* Increased height */
+        width: 30%;
+        background: #cb5a5e;
+        margin-top: 15px; /* Adjusted margin */
+        margin-left: 10px; /* Adjusted margin */
+    }
+
+    .mail .letter .stamp {
+        height: 45px; /* Increased size */
+        width: 45px; /* Increased size */
+        background: #cb5a5e;
+        margin-top: 45px; /* Adjusted margin */
+        margin-left: 180px; /* Adjusted margin */
+        border-radius: 100%;
+        opacity: 0.3;
+    }
+
+    .shadow {
+        position: absolute;
+        width: 300px; /* Match the width of the envelope */
+        height: 40px; /* Increased height */
+        background: radial-gradient(#00000080, #00000080, #00000080);
+        top: 340px; /* Adjusted position closer to the envelope */
+        left: 50%;
+        transform: translateX(-50%); /* Shadow remains static */
+        border-radius: 100%;
+    }
+
+    /* Hover effects */
+    .container:hover .mail,
+    .container:active .mail { /* Support both hover and active (tap) */
+        transform: translateY(0);
+    }
+
+    /* On hover, rotate the top fold upwards like a triangle */
+    .container:hover .mail .top-fold,
+    .container:active .mail .top-fold { /* Support both hover and active (tap) */
+        transform: rotateX(0deg); /* Flips the top fold to open */
+        z-index: 1; /* Set the top fold above the letter */
+    }
+
+    .container:hover .shadow,
+    .container:active .shadow { /* Support both hover and active (tap) */
+        width: 300px; /* Shadow width matches the envelope's width */
+        opacity: 0.5;
+    }
+
+    /* Reveal the letter on hover */
+    .container:hover .mail .letter,
+    .container:active .mail .letter { /* Support both hover and active (tap) */
+        height: 250px; /* Show the letter */
+        opacity: 1; /* Make it visible */
+    }
+
+    /* Button Styling */
+    .button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #e95f55;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: #cf4a43;
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="mail">
+            <div class="back-fold"></div>
+            <div class="letter">
+                <!-- Romantic message that stays fixed inside the letter -->
+                <div class="message">Happy Valentine's Day!</div>
+            </div>
+            <div class="top-fold"></div>
+            <div class="body"></div>
+            <div class="left-fold"></div>
+        </div>
+        <div class="shadow"></div> <!-- Shadow width matches the envelope's width -->
+    </div>
+    <!-- Button added below the envelope -->
+    <a href="../flowers/flower.html">
+    <button class="button">Click here!</button>
+    </a>
+</body>
+</html>
