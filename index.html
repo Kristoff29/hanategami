@@ -221,5 +221,29 @@
     <a href="../flowers/flower.html">
     <button class="button">Click here!</button>
     </a>
+
+    <script>
+        // Detect if the screen width is less than 768px (mobile view)
+        if (window.innerWidth <= 768) {
+            window.addEventListener('load', () => {
+                // Trigger the "open envelope" effect automatically
+                const topFold = document.querySelector('.mail .top-fold');
+                const letter = document.querySelector('.mail .letter');
+                const shadow = document.querySelector('.shadow');
+    
+                // Open the top fold immediately
+                topFold.style.transform = 'rotateX(0deg)';
+                topFold.style.zIndex = '1';
+    
+                // Reveal the letter
+                letter.style.height = '250px';
+                letter.style.opacity = '1';
+    
+                // Adjust the shadow opacity for mobile
+                shadow.style.opacity = '0.5';
+            });
+        }
+    </script>
+    
 </body>
 </html>
